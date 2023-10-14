@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario con Mustache y Bootstrap</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h2>Formulario de Registro</h2>
+    <form id="registroForm">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" placeholder="Nombre">
+      </div>
+      <div class="form-group">
+        <label for="sucursal">Sucursal:</label>
+        <select class="form-control" id="sucursal">
+          <option value="">Selecciona una sucursal</option>
+          <option value="Sucursal A">Sucursal A</option>
+          <option value="Sucursal B">Sucursal B</option>
+          <option value="Sucursal C">Sucursal C</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="agregarProducto()">Agregar Producto</button>
+        <ul id="productosList"></ul>
+      </div>
+      <div class="form-group">
+        <label for="gastos">Gastos:</label>
+        <input type="text" class="form-control" id="gastos" placeholder="Gastos">
+      </div>
+      <button type="submit" class="btn btn-success">Guardar</button>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.2.0/mustache.min.js"></script>
+
+  <script>
+    let productos = [];
+
+    function agregarProducto() {
+      const nuevoProducto = `Producto ${productos.length + 1}`;
+      productos.push(nuevoProducto);
+      renderizarProductos();
+    }
+
+    function renderizarProductos() {
+      const productosList = document.getElementById('productosList');
+      productosList.innerHTML = Mustache.render(
+        '{{#productos}}<li>{{.}}</li>{{/productos}}',
+        { productos: productos }
+      );
+    }
+
+    document.getElementById('registroForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const nombre = document.getElementById('nombre').value;
+      const sucursal = document.getElementById('sucursal').value;
+      const gastos = document.getElementById('gastos').value;
+
+      console.log({
+        nombre,
+        sucursal,
+        productos,
+        gastos
+      });
+    });
+  </script>
+</body>
+</html>
